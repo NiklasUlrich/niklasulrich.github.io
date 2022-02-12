@@ -100,6 +100,7 @@ ctx2.fillText("To start the prototype, click", 10, 50);
 main_canvas.onclick = function(){
   console.log("starting prototype");
   movie.play();
+  movie.volume = 0.2;
   //start the canvas-"video"
   videoElement.requestVideoFrameCallback(updateCanvas);
   videoElement.requestVideoFrameCallback(segmentLoop);
