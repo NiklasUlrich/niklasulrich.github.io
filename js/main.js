@@ -55,6 +55,10 @@ const updateCanvas = (now, metadata) => {
   canvasElement.width = metadata.width;
   canvasElement.height = metadata.height;
 
+
+  ctx2.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+
   ctx2.drawImage(movie, 0, 0, main_canvas.width, main_canvas.height);
 
   if(mask){
@@ -69,8 +73,7 @@ const updateCanvas = (now, metadata) => {
   videoElement.requestVideoFrameCallback(updateCanvas);
 };
 
-//start the canvas-"video"
-videoElement.requestVideoFrameCallback(updateCanvas);
+
 
 const foregroundColor = {r: 0, g: 0, b: 0, a: 0};
 const backgroundColor = {r: 0, g: 0, b: 0, a: 255};
@@ -90,4 +93,16 @@ async function segmentLoop(now, metadata) {
   videoElement.requestVideoFrameCallback(segmentLoop);
 }
 
-videoElement.requestVideoFrameCallback(segmentLoop);
+ctx2.fillStyle = "white";
+ctx2.font = "30px Arial"
+ctx2.fillText("To start the prototype, click", 10, 50);
+
+main_canvas.onclick = function(){
+  console.log("starting prototype");
+  movie.play();
+  //start the canvas-"video"
+  videoElement.requestVideoFrameCallback(updateCanvas);
+  videoElement.requestVideoFrameCallback(segmentLoop);
+}
+
+
