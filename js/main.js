@@ -4,10 +4,12 @@ const canvasCtx = canvasElement.getContext('2d');
 const main_canvas = document.getElementsByClassName('main_canvas')[0];
 const ctx2 = main_canvas.getContext('2d');
 const movie = document.getElementsByClassName('movie')[0];
+const image = document.getElementById('startimage');
 
 movie.style.display = "none";
 canvasElement.style.display = "none";
 videoElement.style.display = "none";
+main_canvas.style.display = "none";
 
 
 //initalizes the webcam video feed
@@ -92,13 +94,19 @@ async function segmentLoop(now, metadata) {
   
   videoElement.requestVideoFrameCallback(segmentLoop);
 }
-
+/*
 ctx2.fillStyle = "white";
 ctx2.font = "30px Arial"
 ctx2.fillText("To start the prototype, click", 10, 50);
 
-main_canvas.onclick = function(){
+*/
+image.onclick = function(){
   console.log("starting prototype");
+
+  image.style.display = "none";
+  main_canvas.style.display = "block";
+
+
   movie.play();
   movie.volume = 0.2;
   //start the canvas-"video"
