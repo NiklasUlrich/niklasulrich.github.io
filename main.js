@@ -1,5 +1,13 @@
 const image = document.getElementById('startimage');
 var stocks = new Stocks('IC5PFAWJJQF1CR5L');
+var twoDctx = image.getContext("2d");
+twoDctx.fillStyle = "#FF0000";
+twoDctx.fillRect(0, 0, 640, 360);
+
+//twoDctx.moveTo(0, 0);
+//twoDctx.lineTo(200, 100);
+//twoDctx.stroke();
+
 
 let audioctx = null;
 let wave = null;
@@ -28,7 +36,7 @@ function playNote(freq){
 
 async function request () {
     var result = await stocks.timeSeries({
-      symbol: 'TESS',
+      symbol: 'TSLA',
       interval: '1min',
       amount: 1000
      });
@@ -84,7 +92,23 @@ function createOscillatorWave(stockData){
     var curves = mapToCurve(stockData);
     console.log(curves);
     const newWave = audioctx.createPeriodicWave(curves[0], curves[1]);
+    drawCurve(curves[0]);
     return newWave;
+}
+
+function drawCurve(curve){
+    var height = image.height;
+    var width = image.width;
+    var numberOfEntries = curve.length;
+
+    var stepSize = width/numberOfEntries;
+    console.log("stepsize: " + stepSize);
+
+    for(var i = 1; i < numberOfEntries; i++){
+        twoDctx.moveTo(stepSize * (i - 1), height * ( (curve[i-1] + 1.0) / 2 ) );
+        twoDctx.lineTo(stepSize * (i), height * ( (curve[i] + 1.0) / 2 ) );
+        twoDctx.stroke();
+    }
 }
 
 function mapToRange(value, minIn, maxIn, minRange, maxRange){
