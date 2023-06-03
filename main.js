@@ -1,13 +1,23 @@
 const image = document.getElementById('startimage');
 var stocks = new Stocks('IC5PFAWJJQF1CR5L');
 var twoDctx = image.getContext("2d");
-twoDctx.fillStyle = "#FF0000";
+twoDctx.fillStyle = "#000000";
 twoDctx.fillRect(0, 0, 640, 360);
+twoDctx.strokeStyle = "white";
+
 
 //twoDctx.moveTo(0, 0);
 //twoDctx.lineTo(200, 100);
 //twoDctx.stroke();
 
+const stockSymbols = [];
+stockSymbols.push(
+    "TSLA",
+    "GOOGL",
+    "OIL",
+    "GOLD",
+
+);
 
 let audioctx = null;
 let wave = null;
@@ -33,13 +43,18 @@ function playNote(freq){
     node.connect(audioctx.destination);
 }
 
-
+var currentStock = 0;
 async function request () {
     var result = await stocks.timeSeries({
-      symbol: 'TSLA',
+      symbol: stockSymbols[currentStock],
       interval: '1min',
       amount: 1000
      });
+
+     console.log("Stock: " + stockSymbols[currentStock])
+
+     currentStock++;
+     if(currentStock >= stockSymbols.length) currentStock = 0;
   
      return(result);
 }
@@ -90,13 +105,16 @@ function mapToCurve(stockData){
 
 function createOscillatorWave(stockData){
     var curves = mapToCurve(stockData);
-    console.log(curves);
-    const newWave = audioctx.createPeriodicWave(curves[0], curves[1]);
+    const newWave = audioctx.createPeriodicWave(curves[0], curves[0]);
     drawCurve(curves[0]);
     return newWave;
 }
 
 function drawCurve(curve){
+    twoDctx.clearRect(0, 0, image.width, image.height);
+    twoDctx.beginPath();
+
+
     var height = image.height;
     var width = image.width;
     var numberOfEntries = curve.length;
@@ -149,6 +167,10 @@ async function playStock(){
 }
 
 image.onclick = function(){
+    loadStock();
+}
+
+function loadStock(){
     if(audioctx==null){
         audioctx = new(AudioContext || webkitAudioContext || window.webkitAudioContext)();
     }
@@ -172,6 +194,8 @@ async function bootKeyBoard(){
             case 'g': freq = 196.0; break;
             case 'h': freq = 220.0; break;
             case 'j': freq = 246.9; break;
+
+            case 'c': loadStock(); return; 
             default: return;
         }
         playNote(freq);
