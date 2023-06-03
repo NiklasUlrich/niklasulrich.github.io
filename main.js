@@ -169,38 +169,41 @@ async function playStock(){
 image.onclick = function(){
     loadStock();
 }
-
+ var loadingDone = true;
 function loadStock(){
-    if(audioctx==null){
-        audioctx = new(AudioContext || webkitAudioContext || window.webkitAudioContext)();
-    }
+    if(loadingDone){
+        if(audioctx==null){
+            audioctx = new(AudioContext || webkitAudioContext || window.webkitAudioContext)();
+        }
+        loadingDone = false;
 
-    //playStock();
-    bootKeyBoard(); 
+        bootKeyBoard(); 
+    }
 }
+
+document.addEventListener('keypress', (event) => {
+    var freq;
+    switch (event.key){
+        case 'a': freq = 130.8; break;
+        case 's': freq = 146.8; break;
+        case 'd': freq = 164.8; break;
+        case 'f': freq = 174.6; break;
+        case 'g': freq = 196.0; break;
+        case 'h': freq = 220.0; break;
+        case 'j': freq = 246.9; break;
+
+        case 'c': loadStock(); return; 
+        default: return;
+    }
+    playNote(freq);
+  }, false);
+// document.addEventListener("keyup", onKeyUp(wave));
 
 async function bootKeyBoard(){
     console.log("booting keyboard")
     var stockData = await request();
     wave = createOscillatorWave(stockData, audioctx);
-
-    document.addEventListener('keypress', (event) => {
-        var freq;
-        switch (event.key){
-            case 'a': freq = 130.8; break;
-            case 's': freq = 146.8; break;
-            case 'd': freq = 164.8; break;
-            case 'f': freq = 174.6; break;
-            case 'g': freq = 196.0; break;
-            case 'h': freq = 220.0; break;
-            case 'j': freq = 246.9; break;
-
-            case 'c': loadStock(); return; 
-            default: return;
-        }
-        playNote(freq);
-      }, false);
-   // document.addEventListener("keyup", onKeyUp(wave));
+    loadingDone = true;
 }
 
 
