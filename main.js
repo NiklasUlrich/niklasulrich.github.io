@@ -184,15 +184,37 @@ function loadStock(){
 document.addEventListener('keypress', (event) => {
     var freq;
     switch (event.key){
-        case 'a': freq = 130.8; break;
-        case 's': freq = 146.8; break;
-        case 'd': freq = 164.8; break;
-        case 'f': freq = 174.6; break;
-        case 'g': freq = 196.0; break;
-        case 'h': freq = 220.0; break;
-        case 'j': freq = 246.9; break;
+        case 'a': freq = 130.8; break; //C
+        case 's': freq = 146.8; break; //D
+        case 'd': freq = 164.8; break; //E 
+        case 'f': freq = 174.6; break; //F
+        case 'g': freq = 196.0; break; //G
+        case 'h': freq = 220.0; break; //A
+        case 'j': freq = 246.9; break; //B
 
-        case 'c': loadStock(); return; 
+        case 'q': freq = 138.6; break; //C#
+        case 'w': freq = 155.6; break; //D#
+        case 'e': freq = 185.0; break; //F#
+        case 'r': freq = 207.7; break; //G#
+        case 't': freq = 233.1; break; //Bb
+
+        case 'y': freq = 261.6; break; //C
+        case 'x': freq = 293.7; break; //D
+        case 'c': freq = 329.6; break; //E 
+        case 'v': freq = 349.2; break; //F
+        case 'b': freq = 392.0; break; //G
+        case 'n': freq = 440.0; break; //A
+        case 'm': freq = 493.9; break; //B
+
+        case 'z': freq = 277.2; break; //C#
+        case 'u': freq = 311.1; break; //D#
+        case 'i': freq = 370.0; break; //F#
+        case 'o': freq = 415.3; break; //G#
+        case 'p': freq = 466.2; break; //Bb
+
+        case ',': freq = 523.3; break; //C
+
+        case '.': loadStock(); return; //reset
         default: return;
     }
     playNote(freq);
